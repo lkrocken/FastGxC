@@ -9,7 +9,7 @@ Suggests:
     dplyr,
     data.table,
     MatrixEQTL,
-    mvtnorm
+    mvtnorm,
     reshape2,
     magrittr,
     TreeQTL
