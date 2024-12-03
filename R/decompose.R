@@ -12,9 +12,6 @@ if(!dir.exists(data_dir)) dir.create(data_dir)
 #exp_mat=read.table(file = paste0(data_dir,exp_mat_filename), sep = '\t')
 exp_mat=data.table::fread(file = exp_mat_filename, sep = '\t', data.table = F)
 
-#%%%%%%%%%%%%%%% Print number of genes and samples
-sprintf("There are %s samples and %s genes. The max number of missing samples for a gene is  %s. The max number of missing genes for a sample is  %s.", nrow(exp_mat), ncol(exp_mat),max(colSums(is.na(exp_mat))),max(rowSums(is.na(exp_mat))))
-
 #%%%%%%%%%%%%%%% Sample and context names
 design=sapply(1:nrow(exp_mat), function(i) unlist(strsplit(exp_mat[,1][i], split = " - "))[1])
 context_names=sapply(1:nrow(exp_mat), function(i) unlist(strsplit(exp_mat[,1][i], split = " - "))[2])
@@ -24,15 +21,22 @@ contexts=unique(context_names)
 print("Decomposing data")
 rownames(exp_mat) = exp_mat[,1]
 exp_mat = exp_mat[,-1]
+
+#%%%%%%%%%%%%%%% Print number of genes and samples
+string1 = sprintf("There are %s samples and %s genes. The max number of missing samples for a gene is  %s. The max number of missing genes for a sample is  %s. \n", nrow(exp_mat), ncol(exp_mat),max(colSums(is.na(exp_mat))),max(rowSums(is.na(exp_mat))))
+cat(string1)
+
 dec_exp_all=decompose(X = exp_mat, design = design)
 bexp_all=dec_exp_all$Xb
 wexp_all=dec_exp_all$Xw
 bexp_all[is.nan(bexp_all)]=NA
 wexp_all[is.nan(wexp_all)]=NA
 
-sprintf("Between individual matrix: There are %s individuals and %s genes. The max number of missing samples for a gene is  %s. The max number of missing genes for a sample is  %s.", nrow(bexp_all), ncol(bexp_all),max(colSums(is.na(bexp_all))),max(rowSums(is.na(bexp_all))))
+string2 = sprintf("Between individual matrix: There are %s individuals and %s genes. The max number of missing samples for a gene is  %s. The max number of missing genes for a sample is  %s. \n", nrow(bexp_all), ncol(bexp_all),max(colSums(is.na(bexp_all))),max(rowSums(is.na(bexp_all))))
+cat(string2)
 
-sprintf("Within individual matrix: There are %s samples and %s genes. The max number of missing samples for a gene is  %s. The max number of missing genes for a sample is  %s.", nrow(wexp_all), ncol(wexp_all),max(colSums(is.na(wexp_all))),max(rowSums(is.na(wexp_all))))
+string3 = sprintf("Within individual matrix: There are %s samples and %s genes. The max number of missing samples for a gene is  %s. The max number of missing genes for a sample is  %s. \n", nrow(wexp_all), ncol(wexp_all),max(colSums(is.na(wexp_all))),max(rowSums(is.na(wexp_all))))
+cat(string3)
 
 #%%%%%%%%%%%%%%% Save decomposed expression files 
 print("Finished decomposition, saving files")

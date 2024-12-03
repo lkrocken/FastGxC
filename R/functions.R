@@ -16,12 +16,6 @@ decompose=function(X,design){
   return(list(Xw=Xw,Xb=X.mean.indiv))
 }
 
-#' modified TreeQTL function
-#'
-#' Function to perform hierarchical multiple testing correction across 3 different levels
-#'
-#' @param directory where matrixeQTL output is stored, directory for treeQTL output, names of contexts
-#' @return outputs eAssociation and eGene files with FDR corrected p-values
 #' @export
 get_eGenes_multi_tissue_mod = function (m_eqtl_out_dir, treeQTL_dir, tissue_names, level1 = 0.05, level2 = 0.05, level3 = 0.05, exp_suffix) {
   pattern=paste0(exp_suffix,".all_pairs.txt")

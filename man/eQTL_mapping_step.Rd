@@ -9,7 +9,9 @@ eQTL_mapping_step(
   snps_location_file_name,
   expression_file_name,
   gene_location_file_name,
-  output_file_name
+  context,
+  shared_specific,
+  out_dir
 )
 }
 \arguments{
@@ -29,8 +31,16 @@ eQTL_mapping_step(
 \item full file path with gene ids, start, and end positions
 }}
 
-\item{output_file_name}{\itemize{
-\item full file path of output file where eQTL files will be written out
+\item{context}{\itemize{
+\item name of context for output file naming purposes
+}}
+
+\item{shared_specific}{\itemize{
+\item either "shared" if mapping eQTLs with shared component or "specific" if mapping eQTLs with specific component
+}}
+
+\item{out_dir}{\itemize{
+\item full file path of output directory where eQTL file will be written out
 }}
 }
 \value{
