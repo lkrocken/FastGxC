@@ -2,19 +2,19 @@
 #'
 #' Function to generate simulated SNP and expression data
 #'
-#' @param data_dir - directory where simulated data is written out to
-#' @param N - number of individuals simulated
-#' @param n_genes - number of genes simulated
-#' @param n_snps_per_gene - number of cis-SNPs per gene
-#' @param n_contexts - number of contexts to simulate (e.g. tissues or cell types)
+#' @param data_dir - full filepath of the directory where simulated data will be written to
+#' @param N - number of individuals simulated (must be a whole number)
+#' @param n_genes - number of genes simulated (must be a whole number)
+#' @param n_snps_per_gene - number of cis-SNPs per gene (must be a whole number)
+#' @param n_contexts - number of contexts to simulate (e.g. tissues or cell types) (must be a whole number)
 #' @param maf - minor allele frequency for genotypes 
 #' @param w_corr - error covariance between contexts
 #' @param v_e - error variance in each context (maybe take this out and set it to 1)
-#' @param sim_scenario - either "null", "single-context_het", or "multi-context_het" to signify simulations under the null case (no genetic effects in any context), the case of single context heterogeneity (one context drives the genetic effect heterogeneity), or the case of multi-context heterogeneity (heterogeneity of genetic effects across multiple contexts) 
+#' @param sim_scenario - must be either "null" or "single_context_het" to signify simulations under the null case (no genetic effects in any context) or the case of single context heterogeneity (one context drives the genetic effect heterogeneity)
 #' @return outputs an expression matrix file, a genotype matrix file, a SNP location file, and a gene location file all in the format needed for FastGxC's decomposition step and then subsequent eQTL mapping step with Matrix eQTL.
 #'
 #' @export
-simulate_data = function(data_dir, N = 300, n_genes=100, n_snps_per_gene=100, n_contexts=5, maf=0.1, w_corr=0.2, v_e=1, sim_scenario = "single-context_het"){
+simulate_data = function(data_dir, N = 300, n_genes=100, n_snps_per_gene=10000, n_contexts=50, maf=0.1, w_corr=0.2, v_e=1, sim_scenario = "single_context_het"){
 
 if(!dir.exists(data_dir)) dir.create(data_dir)
 
@@ -78,7 +78,7 @@ for(i in 1:n_genes){
 }
 }
 
-if(sim_scenario == "single-context_het"){
+if(sim_scenario == "single_context_het"){
 which_context=rep_len(x = 1:n_contexts, length.out = n_genes)
 
 for(i in 1:n_genes){
