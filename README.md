@@ -22,18 +22,17 @@ library(TreeQTL)
 Once all dependencies are installed and loaded you can install FastGxC using:
 ```
   devtools::install_github("lkrocken/FastGxC")
-
 ```
-Once FastGxC is installed, load all functions using library(FastGxC)
+Once FastGxC is installed, load all functions using 
+```
+library(FastGxC)
+```
 
 # Simulate toy data
-Please download the required R packages inside `generate_simulated_data.R` before running the toy example. 
 
-If you want to run a toy example, you can generate simulated data by running 
+If you want to run a toy example, you can generate simulated data by running the following code in R:
 ```
-  project_directory=your_project_directory
-  
-  Rscript generate_simulated_data.R $project_directory
+  simulate_data
 ```
 
 This script will make a _data_ folder in your _project_directory_ (if one does not already exists) and generate and save the following files 

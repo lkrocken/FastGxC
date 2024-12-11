@@ -22,22 +22,25 @@ get_eGenes_multi_tissue_mod = function (m_eqtl_out_dir, treeQTL_dir, tissue_name
   
   print(paste("Step 0.1: Computing summary statistics for each tissue"))
   m_eqtl_outfiles <- list.files(m_eqtl_out_dir, pattern = pattern, full.names = TRUE)
-  if(length(m_eqtl_outfiles)!=49) stop(sprintf("Expecting 49 MatrixEQTL files but got %i.", length(m_eqtl_outfiles)))
+  if(length(m_eqtl_outfiles)!=length(tissue_names)) stop(sprintf("Expecting %i MatrixEQTL files but got %i.", length(tissue_names),length(m_eqtl_outfiles)))
   
-  n_SNPs_per_gene_outfiles <- list.files(treeQTL_dir, pattern = "n_SNPs_per_gene", full.names = TRUE)
-  n_SNPs_per_gene_outfiles=n_SNPs_per_gene_outfiles[!grepl(pattern = "AverageTissue", x = n_SNPs_per_gene_outfiles)]
-  if(length(n_SNPs_per_gene_outfiles)!=49) stop(sprintf("Expecting 49 files with nr of SNPs per gene but got %i.", length(n_SNPs_per_gene_outfiles)))
+  #n_SNPs_per_gene_outfiles <- list.files(treeQTL_dir, pattern = "n_SNPs_per_gene", full.names = TRUE)
+  #n_SNPs_per_gene_outfiles=n_SNPs_per_gene_outfiles[!grepl(pattern = "AverageTissue", x = n_SNPs_per_gene_outfiles)]
+  #if(length(n_SNPs_per_gene_outfiles)!=49) stop(sprintf("Expecting 49 files with nr of SNPs per gene but got %i.", length(n_SNPs_per_gene_outfiles)))
   
   n_tissue <- length(tissue_names)
   for (i in 1:n_tissue) {
     cur_tissue_name <- tissue_names[i]
+    m_eqtl_out = m_eqtl_outfiles[grepl(cur_tissue_name, m_eqtl_outfiles)]
     
     print(paste("Computing summary statistics for tissue ", cur_tissue_name, sep = ""))
-    n_SNPs_per_gene_this_tissue <- data.frame(fread(input = n_SNPs_per_gene_outfiles[i], header = F), stringsAsFactors = F,check.names = F)
+    #n_SNPs_per_gene_this_tissue <- data.frame(fread(input = n_SNPs_per_gene_outfiles[i], header = F), stringsAsFactors = F,check.names = F)
+    #colnames(n_SNPs_per_gene_this_tissue)=c("family","n_tests")
+    #n_SNPs_per_gene_this_tissue <- n_SNPs_per_gene_this_tissue[n_SNPs_per_gene_this_tissue$n_tests > 0, ]
+    n_SNPs_per_gene_this_tissue = fread(m_eqtl_out) %>% select(gene) %>% group_by(gene) %>% mutate(n = n()) %>% distinct()
     colnames(n_SNPs_per_gene_this_tissue)=c("family","n_tests")
-    n_SNPs_per_gene_this_tissue <- n_SNPs_per_gene_this_tissue[n_SNPs_per_gene_this_tissue$n_tests > 0, ]
-    
-    gene_simes_cur_tissue <- get_eGenes(n_tests_per_gene = n_SNPs_per_gene_this_tissue, m_eqtl_out = m_eqtl_outfiles[i], method = "BH", level1 = 1, level2 = 1, silent = TRUE)
+
+    gene_simes_cur_tissue <- get_eGenes(n_tests_per_gene = n_SNPs_per_gene_this_tissue, m_eqtl_out = m_eqtl_out, method = "BH", level1 = 1, level2 = 1, silent = TRUE)
     gene_simes_cur_tissue <- merge(gene_simes_cur_tissue, n_SNPs_per_gene_this_tissue, by = "family", all = TRUE)
     gene_simes_cur_tissue$fam_p[which(is.na(gene_simes_cur_tissue$fam_p))] <- 1
     
@@ -85,7 +88,7 @@ get_eGenes_multi_tissue_mod = function (m_eqtl_out_dir, treeQTL_dir, tissue_name
                                                                    level3 = level3)
     
     print(paste("Total number of associations for tissue", cur_tissue_name, "=", sum(n_sel_per_gene$n_sel_snp)))
-    out_file_name <- paste0(treeQTL_dir,"/eAssoc_by_gene.", cur_tissue_name,exp_suffix,".txt")
+    out_file_name <- paste0(treeQTL_dir,"/eAssoc_by_gene.", cur_tissue_name,"_", exp_suffix,".txt")
     print(paste("Writing output file", out_file_name))
     get_eAssociations(data.frame(family = n_sel_per_gene$family, pval = NA, n_sel = n_sel_per_gene$n_sel_snp), NULL, 
                       m_eqtl_outfiles[i], out_file_name, by_snp = FALSE, silent = TRUE)

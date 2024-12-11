@@ -1,6 +1,6 @@
 #' eQTL Mapping Step
 #'
-#' Function to map cis eQTLs
+#' Function to map cis eQTLs - cis window is defined as 1Mb
 #'
 #' @param  SNP_file_name - full file path with genotypes of all individuals
 #' @param  snps_location_file_name - full file path with snp ids, start, and end positions
