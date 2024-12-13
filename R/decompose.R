@@ -2,7 +2,8 @@
 #'
 #' Function to decompose expression into one shared component and specific components per context
 #'
-#' @param  input filepath where merged expression matrix is stored, output directory to store data
+#' @param  exp_mat_filename - full input filepath where expression matrix is stored. This file should be in the same format as the expression data file outputted by FastGxC's simulate_data function
+#' @param  data_dir - full filepath where decomposed output files will be written out to
 #' @return outputs one file with the shared component of expression per individual and C files for each specific expression component for each of the C contexts
 #'
 #' @export

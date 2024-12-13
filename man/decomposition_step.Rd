@@ -7,7 +7,13 @@
 decomposition_step(exp_mat_filename, data_dir)
 }
 \arguments{
-\item{input}{filepath where merged expression matrix is stored, output directory to store data}
+\item{exp_mat_filename}{\itemize{
+\item full input filepath where expression matrix is stored. This file should be in the same format as the expression data file outputted by FastGxC's simulate_data function
+}}
+
+\item{data_dir}{\itemize{
+\item full filepath where decomposed output files will be written out to
+}}
 }
 \value{
 outputs one file with the shared component of expression per individual and C files for each specific expression component for each of the C contexts
