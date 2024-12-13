@@ -8,33 +8,35 @@ simulate_data(
   data_dir,
   N = 300,
   n_genes = 100,
-  n_snps_per_gene = 100,
-  n_contexts = 5,
+  n_snps_per_gene = 10000,
+  n_contexts = 50,
   maf = 0.1,
   w_corr = 0.2,
   v_e = 1,
-  sim_scenario = "single-context_het"
+  missing = 0,
+  seed = 1,
+  sim_scenario = "single_context_het"
 )
 }
 \arguments{
 \item{data_dir}{\itemize{
-\item directory where simulated data is written out to
+\item full filepath of the directory where simulated data will be written to
 }}
 
 \item{N}{\itemize{
-\item number of individuals simulated
+\item number of individuals simulated (must be a whole number)
 }}
 
 \item{n_genes}{\itemize{
-\item number of genes simulated
+\item number of genes simulated (must be a whole number)
 }}
 
 \item{n_snps_per_gene}{\itemize{
-\item number of cis-SNPs per gene
+\item number of cis-SNPs per gene (must be a whole number)
 }}
 
 \item{n_contexts}{\itemize{
-\item number of contexts to simulate (e.g. tissues or cell types)
+\item number of contexts to simulate (e.g. tissues or cell types) (must be a whole number)
 }}
 
 \item{maf}{\itemize{
@@ -49,8 +51,16 @@ simulate_data(
 \item error variance in each context (maybe take this out and set it to 1)
 }}
 
+\item{missing}{\itemize{
+\item decimal value signifying percentage of missingness in simulated expression data (e.g. parameter value of 0.3 would indicate 30\% missing values in outputted expression matrix)
+}}
+
+\item{seed}{\itemize{
+\item can set seed for reproducibility
+}}
+
 \item{sim_scenario}{\itemize{
-\item either "null", "single-context_het", or "multi-context_het" to signify simulations under the null case (no genetic effects in any context), the case of single context heterogeneity (one context drives the genetic effect heterogeneity), or the case of multi-context heterogeneity (heterogeneity of genetic effects across multiple contexts)
+\item must be either "null" or "single_context_het" to signify simulations under the null case (no genetic effects in any context) or the case of single context heterogeneity (one context drives the genetic effect heterogeneity)
 }}
 }
 \value{

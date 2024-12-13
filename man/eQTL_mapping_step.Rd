@@ -47,5 +47,5 @@ eQTL_mapping_step(
 outputs one file of mapped cis eQTLs
 }
 \description{
-Function to map cis eQTLs
+Function to map cis eQTLs - cis window is defined as 1Mb
 }

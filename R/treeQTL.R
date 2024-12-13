@@ -1,5 +1,16 @@
-
-treeQTL_step = function(data_dir, snps_location_file_name, gene_location_file_name, out_dir){
+#' Multiple Testing Correction
+#'
+#' Function to adjust for hierarchical multiple testing correction using TreeQTL. Runs multiple testing correction for both FastGxC shared and specific eQTLs. 
+#'
+#' @param data_dir - full filepath of the directory where eQTL output files are stored. This function assumes that files are named as outputted by FastGxC's eQTL mapping function
+#' @param snps_location_file_name - full filepath of the snpsloc file used in the eQTL mapping step
+#' @param gene_location_file_name - full filepath of the geneloc file used in the eQTL mapping step
+#' @param out_dir - full filepath of the output directory that FDR adjusted eQTLs should be written out to.
+#' @param fdr_thresh - value between 0 and 1 that signifies what FDR threshold for multiple testing correction. The same value will be used across all hierarchical levels.
+#' @return outputs one file of specific eGenes across all contexts and one file of shared eGenes. Outputs an eAssociation file for each context and one for shared eQTLs with snp-gene pairs and FDR adjusted p-values. 
+#'
+#' @export
+treeQTL_step = function(data_dir, snps_location_file_name, gene_location_file_name, out_dir, fdr_thresh = 0.05){
 
 # use a single thread
 print(paste0("data.table getDTthreads(): ",getDTthreads()))
@@ -10,9 +21,9 @@ print(paste0("after setting as 1 thread; data.table getDTthreads(): ",getDTthrea
 options(warn=1)
 
 # FDR thresholds
-level1=0.05
-level2=0.05
-level3=0.05
+level1=fdr_thresh
+level2=fdr_thresh
+level3=fdr_thresh
 
 # Distance for local gene-SNP pairs
 cisDist = 1e6;

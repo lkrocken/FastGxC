@@ -6,7 +6,8 @@ Preprint available on [BioRxiv](https://www.biorxiv.org/content/10.1101/2021.06.
 Extended data with FastGxC results on GTEx, OneK1K, and CLUES cohorts can be found [here](https://zenodo.org/record/5015123#.YNJ1WpNKjOR)
 
 # Package Installation and Dependencies
-In order for FastGxC functions to run properly, the following packages are required and should be installed prior to using any FastGxC functions.
+FastGxC is an R package that can be loaded and used in any R environment. 
+In order for FastGxC to run properly, the following packages are required and should be installed in R prior to using any FastGxC functions.
 ```
 library(devtools)
 library(dplyr)
@@ -32,8 +33,13 @@ library(FastGxC)
 
 If you want to run a toy example, you can generate simulated data by running the following code in R:
 ```
-  simulate_data
+  data_dir = "~/simulations/"
+  sim_scenario = "single_context_het"
+  simulate_data(data_dir = data_dir, sim_scenario = sim_scenario)
 ```
+
+This will generate and save the following files in the data_dir:
+(1) 
 
 This script will make a _data_ folder in your _project_directory_ (if one does not already exists) and generate and save the following files 
 (1) SNPs.txt: snp genotype data for 10,000 SNPs and 300 individuals (MatrixEQTL input format), 
